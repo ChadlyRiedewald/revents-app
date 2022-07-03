@@ -1,23 +1,23 @@
 import { Button, Container, Menu } from 'semantic-ui-react';
-import { NavLink, Outlet, useNavigate } from 'react-router-dom';
+import { NavLink, useHistory } from 'react-router-dom';
 import SignedOutMenu from './SignedOutMenu';
 import SignedInMenu from './SignedInMenu';
 import { useState } from 'react';
 
-const NavBar = ({ setFormOpen }) => {
+const NavBar = () => {
     const [auth, setAuth] = useState(false);
-    const navigate = useNavigate();
+    const history = useHistory();
 
     function handleSignOut() {
         setAuth(false);
-        navigate('/');
+        history.push('/');
     }
 
     return (
         <>
             <Menu inverted fixed='top'>
                 <Container>
-                    <Menu.Item as={NavLink} to='/' header>
+                    <Menu.Item exact as={NavLink} to='/' header>
                         <img
                             src='/assets/logo.png'
                             alt='logo'
@@ -25,15 +25,11 @@ const NavBar = ({ setFormOpen }) => {
                         />
                         Re-vents
                     </Menu.Item>
-                    <Menu.Item as={NavLink} to='events' name='Events' />
+                    <Menu.Item as={NavLink} to='/events' name='Events' />
+                    <Menu.Item as={NavLink} to='/sandbox' name='Sandbox' />
                     {auth && (
-                        <Menu.Item as={NavLink} to='create-event'>
-                            <Button
-                                onClick={() => setFormOpen(true)}
-                                positive
-                                inverted
-                                content='Create Event'
-                            />
+                        <Menu.Item as={NavLink} to='/createEvent'>
+                            <Button positive inverted content='Create Event' />
                         </Menu.Item>
                     )}
 
@@ -44,9 +40,6 @@ const NavBar = ({ setFormOpen }) => {
                     )}
                 </Container>
             </Menu>
-            <Container className='main'>
-                <Outlet />
-            </Container>
         </>
     );
 };

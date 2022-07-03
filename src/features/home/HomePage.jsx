@@ -7,10 +7,10 @@ import {
     Segment,
 } from 'semantic-ui-react';
 
-import { useNavigate } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 const HomePage = () => {
-    const navigate = useNavigate();
+    const history = useHistory();
 
     return (
         <Segment inverted textAlign='center' vertical className='mastHead'>
@@ -23,7 +23,11 @@ const HomePage = () => {
                     />
                     Re-vents
                 </Header>
-                <Button onClick={() => navigate('events')} size='huge' inverted>
+                <Button
+                    onClick={() => history.push('/events')}
+                    size='huge'
+                    inverted
+                >
                     Get started
                     <Icon name='right arrow' inverted />
                 </Button>

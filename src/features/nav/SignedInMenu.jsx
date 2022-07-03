@@ -9,7 +9,7 @@ const SignedInMenu = ({ signOut }) => {
                 <Dropdown.Menu>
                     <Dropdown.Item
                         as={Link}
-                        to='/create-event'
+                        to='/createEvent'
                         text='Create Event'
                         icon='plus'
                     />
