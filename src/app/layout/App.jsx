@@ -6,12 +6,14 @@ import EventDetailedPage from '../../features/events/eventDetailed/EventDetailed
 import EventForm from '../../features/events/eventForm/EventForm';
 import Sandbox from '../../features/sandbox/Sandbox';
 import { Container } from 'semantic-ui-react';
+import ModalManager from '../common/modals/ModalManager';
 
 const App = () => {
     const { key } = useLocation();
 
     return (
         <>
+            <ModalManager />
             <Route exact path='/' component={HomePage} />
             <Route
                 path={'/(.+)'}
