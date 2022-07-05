@@ -34,7 +34,7 @@ const EventListItem = ({ event }) => {
                         {format(event.date, 'd MMMM yyyy, hh:mm')}
                     </List.Item>
                     <List.Item>
-                        <Icon name='marker' /> {event.venue}
+                        <Icon name='marker' /> {event.venue.address}
                     </List.Item>
                 </List>
             </Segment>

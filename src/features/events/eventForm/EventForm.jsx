@@ -1,3 +1,4 @@
+/* global google */
 import { Button, Header, Segment } from 'semantic-ui-react';
 import cuid from 'cuid';
 import { Link, useHistory, useParams } from 'react-router-dom';
@@ -10,6 +11,7 @@ import TextArea from '../../../app/common/form/TextArea';
 import SelectInput from '../../../app/common/form/SelectInput';
 import { categoryData } from '../../../app/api/categoryOptions';
 import DateInput from '../../../app/common/form/DateInput';
+import PlaceInput from '../../../app/common/form/PlaceInput';
 
 const EventForm = () => {
     const history = useHistory();
@@ -23,18 +25,28 @@ const EventForm = () => {
         title: '',
         category: '',
         description: '',
-        city: '',
-        venue: '',
+        city: {
+            address: '',
+            latLng: null,
+        },
+        venue: {
+            address: '',
+            latLng: null,
+        },
         date: '',
     };
 
     const validationSchema = Yup.object({
-        title: Yup.string().required('You must provide a title'),
-        category: Yup.string().required('You must provide a category'),
-        description: Yup.string().required('You must provide a description'),
-        city: Yup.string().required('You must provide a city'),
-        venue: Yup.string().required('You must provide a venue'),
-        date: Yup.string().required('You must provide a date'),
+        title: Yup.string().required('Title is required'),
+        category: Yup.string().required('Category is required'),
+        description: Yup.string().required('Description is required'),
+        city: Yup.object().shape({
+            address: Yup.string().required('City is required'),
+        }),
+        venue: Yup.object().shape({
+            address: Yup.string().required('Venue is required'),
+        }),
+        date: Yup.string().required('Date is required'),
     });
 
     return (
@@ -57,7 +69,7 @@ const EventForm = () => {
                     history.push('/events');
                 }}
             >
-                {({ isSubmitting, dirty, isValid }) => (
+                {({ isSubmitting, dirty, isValid, values }) => (
                     <Form className='ui form'>
                         <Header sub content='Event Details' />
                         <TextInput name='title' placeholder='Event title' />
@@ -72,8 +84,19 @@ const EventForm = () => {
                             rows={3}
                         />
                         <Header sub content='Event Location Details' />
-                        <TextInput name='city' placeholder='City' />
-                        <TextInput name='venue' placeholder='Venue' />
+                        <PlaceInput name='city' placeholder='City' />
+                        <PlaceInput
+                            name='venue'
+                            disabled={!values.city.latLng}
+                            placeholder='Venue'
+                            options={{
+                                location: new google.maps.LatLng(
+                                    values.city.latLng
+                                ),
+                                radius: 1000,
+                                types: ['establishment'],
+                            }}
+                        />
                         <DateInput
                             name='date'
                             placeholderText='Event date'
