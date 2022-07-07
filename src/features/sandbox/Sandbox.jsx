@@ -8,7 +8,9 @@ import { useState } from 'react';
 
 const Sandbox = () => {
     const dispatch = useDispatch();
+    const [target, setTarget] = useState(null);
     const data = useSelector(state => state.test.data);
+    const { loading } = useSelector(state => state.async);
 
     const defaultProps = {
         center: {
@@ -32,12 +34,22 @@ const Sandbox = () => {
             <h2>Testing 1...2...3...</h2>
             <h3>The data is: {data}</h3>
             <Button
-                onClick={() => dispatch(increment(20))}
+                name='increment'
+                loading={loading && target === 'increment'}
+                onClick={e => {
+                    dispatch(increment(20));
+                    setTarget(e.target.name);
+                }}
                 content='Increment'
                 color='green'
             />
             <Button
-                onClick={() => dispatch(decrement(10))}
+                name='decrement'
+                loading={loading && target === 'decrement'}
+                onClick={e => {
+                    dispatch(decrement(10));
+                    setTarget(e.target.name);
+                }}
                 content='Decrement'
                 color='red'
             />

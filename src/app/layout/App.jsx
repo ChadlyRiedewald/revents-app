@@ -7,6 +7,8 @@ import EventForm from '../../features/events/eventForm/EventForm';
 import Sandbox from '../../features/sandbox/Sandbox';
 import { Container } from 'semantic-ui-react';
 import ModalManager from '../common/modals/ModalManager';
+import { ToastContainer } from 'react-toastify';
+import ErrorComponent from '../common/errors/ErrorComponent';
 
 const App = () => {
     const { key } = useLocation();
@@ -14,6 +16,11 @@ const App = () => {
     return (
         <>
             <ModalManager />
+            <ToastContainer
+                position='bottom-right'
+                theme='colored'
+                hideProgressBar
+            />
             <Route exact path='/' component={HomePage} />
             <Route
                 path={'/(.+)'}
@@ -36,6 +43,7 @@ const App = () => {
                                 component={EventForm}
                                 key={key}
                             />
+                            <Route path='/error' component={ErrorComponent} />
                         </Container>
                     </>
                 )}
