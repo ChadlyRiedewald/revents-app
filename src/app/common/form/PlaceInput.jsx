@@ -5,7 +5,7 @@ import PlacesAutocomplete, {
     getLatLng,
 } from 'react-places-autocomplete';
 
-const TextInput = ({ options, ...props }) => {
+const PlaceInput = ({ options, ...props }) => {
     const [field, meta, helpers] = useField(props);
 
     function handleSelect(address) {
@@ -91,4 +91,4 @@ const TextInput = ({ options, ...props }) => {
     );
 };
 
-export default TextInput;
+export default PlaceInput;
