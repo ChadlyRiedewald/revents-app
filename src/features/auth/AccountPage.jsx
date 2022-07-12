@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import * as Yup from 'yup';
 import { useSelector } from 'react-redux';
 import { updateUserPassword } from '../../app/firestore/firebaseService';
+import { toast } from 'react-toastify';
 
 const AccountPage = () => {
     const { currentUser } = useSelector(state => state.auth);
@@ -22,17 +23,23 @@ const AccountPage = () => {
                             newPassword1: Yup.string().required(
                                 'Password is required'
                             ),
-                            newPassword2: Yup.string().oneOf(
-                                [Yup.ref('newPassword1')],
-                                'Passwords do not match'
-                            ),
+                            newPassword2: Yup.string()
+                                .oneOf(
+                                    [Yup.ref('newPassword1')],
+                                    'Passwords do not match'
+                                )
+                                .required('Confirm your new password'),
                         })}
                         onSubmit={async (
                             values,
-                            { setSubmitting, setErrors }
+                            { setSubmitting, setErrors, resetForm }
                         ) => {
                             try {
                                 await updateUserPassword(values);
+                                toast.success(
+                                    'Successfully updated your password'
+                                );
+                                resetForm({ values: '' });
                             } catch (error) {
                                 setErrors({ auth: error.message });
                             } finally {
