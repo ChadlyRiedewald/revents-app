@@ -18,7 +18,10 @@ const EventListItem = ({ event }) => {
                         <Item.Content>
                             <Item.Header content={event.title} />
                             <Item.Description>
-                                Hosted by {event.hostedBy}
+                                Hosted by{' '}
+                                <Link to={`/profile/${event.hostUid}`}>
+                                    {event.hostedBy}
+                                </Link>
                             </Item.Description>
                             {event.isCancelled && (
                                 <Label
@@ -36,7 +39,7 @@ const EventListItem = ({ event }) => {
                 <List horizontal>
                     <List.Item>
                         <Icon name='clock' />{' '}
-                        {format(event.date, 'd MMMM yyyy, hh:mm')}
+                        {format(event.date, 'd MMMM yyyy, HH:mm')}
                     </List.Item>
                     <List.Item>
                         <Icon name='marker' /> {event.venue.address}

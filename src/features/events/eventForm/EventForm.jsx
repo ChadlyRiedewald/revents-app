@@ -137,7 +137,7 @@ const EventForm = () => {
                             timeFormat='HH:mm'
                             showTimeSelect
                             timeCaption='time'
-                            dateFormat='d MMMM yyyy, hh:mm '
+                            dateFormat='d MMMM yyyy, HH:mm'
                         />
                         <Button
                             loading={isSubmitting}
