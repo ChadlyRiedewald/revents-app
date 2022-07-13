@@ -1,4 +1,5 @@
 import firebase from '../config/firebase';
+import * as events from 'events';
 
 const db = firebase.firestore();
 
@@ -28,7 +29,6 @@ export function listenToEventsFromFirestore(predicate) {
             return eventsRef
                 .where('attendeeIds', 'array-contains', user.uid)
                 .where('date', '>=', predicate.get('startDate'));
-
         case 'isHost':
             return eventsRef
                 .where('hostUid', '==', user.uid)
@@ -192,5 +192,24 @@ export async function cancelUserAttendance(event) {
             });
     } catch (error) {
         throw error;
+    }
+}
+
+export function getUserEventsQuery(activeTab, userUid) {
+    let eventsRef = db.collection('events');
+    const today = new Date();
+    switch (activeTab) {
+        case 1: // past events
+            return eventsRef
+                .where('attendeeIds', 'array-contains', userUid)
+                .where('date', '<=', today)
+                .orderBy('date', 'desc');
+        case 2: // hosting
+            return eventsRef.where('hostUid', '==', userUid);
+        default:
+            return eventsRef
+                .where('attendeeIds', 'array-contains', userUid)
+                .where('date', '>=', today)
+                .orderBy('date');
     }
 }

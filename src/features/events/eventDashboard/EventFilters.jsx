@@ -20,8 +20,8 @@ const EventFilters = ({ predicate, setPredicate, loading }) => {
                 />
                 <Menu.Item
                     content={`I'm hosting`}
-                    active={predicate.get('filter') === 'isHosting'}
-                    onClick={() => setPredicate('filter', 'isHosting')}
+                    active={predicate.get('filter') === 'isHost'}
+                    onClick={() => setPredicate('filter', 'isHost')}
                     disabled={loading}
                 />
             </Menu>
