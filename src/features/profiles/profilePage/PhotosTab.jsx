@@ -37,7 +37,7 @@ const PhotosTab = ({ profile, isCurrentUser }) => {
         try {
             await setMainPhoto(photo);
         } catch (error) {
-            toast.error(error);
+            toast.error(error.message);
         } finally {
             setUpdating({ isUpdating: false, target: null });
         }
@@ -49,7 +49,7 @@ const PhotosTab = ({ profile, isCurrentUser }) => {
             await deleteFromFirebaseStorage(photo.name);
             await deletePhotoFromCollection(photo.id);
         } catch (error) {
-            toast.error(error);
+            toast.error(error.message);
         } finally {
             setDeleting({ isDeleting: false, target: null });
         }

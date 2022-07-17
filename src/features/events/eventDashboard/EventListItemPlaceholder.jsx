@@ -1,4 +1,4 @@
-import { Segment, Button, Placeholder } from 'semantic-ui-react';
+import { Button, Placeholder, Segment } from 'semantic-ui-react';
 
 const EventListItemPlaceholder = () => {
     return (

@@ -29,7 +29,7 @@ const EventDetailedHeader = ({ event, isHost, isGoing }) => {
         try {
             await addUserAttendance(event);
         } catch (error) {
-            toast.error(error);
+            toast.error(error.message);
         } finally {
             setLoading(false);
         }
@@ -40,7 +40,7 @@ const EventDetailedHeader = ({ event, isHost, isGoing }) => {
         try {
             await cancelUserAttendance(event);
         } catch (error) {
-            toast.error(error);
+            toast.error(error.message);
         } finally {
             setLoading(false);
         }

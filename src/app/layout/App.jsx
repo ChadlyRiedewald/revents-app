@@ -27,6 +27,7 @@ const App = () => {
                 position='bottom-right'
                 theme='colored'
                 hideProgressBar
+                pauseOnHover
             />
             <Route exact path='/' component={HomePage} />
             <Route

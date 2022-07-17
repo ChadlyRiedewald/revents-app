@@ -20,7 +20,7 @@ const ProfileForm = ({ profile }) => {
                 try {
                     await updateUserProfile(values);
                 } catch (error) {
-                    toast.error(error);
+                    toast.error(error.message);
                 } finally {
                     setSubmitting(false);
                 }

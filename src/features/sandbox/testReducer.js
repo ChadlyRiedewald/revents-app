@@ -31,7 +31,7 @@ export function decrement(amount) {
             dispatch(asyncActionFinish());
         } catch (error) {
             dispatch(asyncActionError(error));
-            toast.error(error);
+            toast.error(error.message);
         }
     };
 }
