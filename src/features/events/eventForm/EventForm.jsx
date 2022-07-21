@@ -2,7 +2,7 @@
 import { Button, Confirm, Header, Segment } from 'semantic-ui-react';
 import { Link, Redirect, useHistory, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { listenToEvents } from '../eventActions';
+import { listenToSelectedEvent } from '../eventActions';
 import { Form, Formik } from 'formik';
 import * as Yup from 'yup';
 import TextInput from '../../../app/common/form/TextInput';
@@ -31,9 +31,7 @@ const EventForm = () => {
     const { id } = useParams();
     const { loading, error } = useSelector(state => state.async);
 
-    const selectedEvent = useSelector(state =>
-        state.event.events.find(e => e.id === id)
-    );
+    const { selectedEvent } = useSelector(state => state.event);
     const initialValues = selectedEvent ?? {
         title: '',
         category: '',
@@ -76,7 +74,7 @@ const EventForm = () => {
 
     useFirestoreDoc({
         query: () => listenToEventFromFirestore(id),
-        data: event => dispatch(listenToEvents([event])),
+        data: event => dispatch(listenToSelectedEvent(event)),
         deps: [id, dispatch],
         shouldExecute: !!id,
     });
