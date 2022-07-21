@@ -1,8 +1,14 @@
 /* global google */
 import { Button, Confirm, Header, Segment } from 'semantic-ui-react';
-import { Link, Redirect, useHistory, useParams } from 'react-router-dom';
+import {
+    Link,
+    Redirect,
+    useHistory,
+    useLocation,
+    useParams,
+} from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { listenToSelectedEvent } from '../eventActions';
+import { clearSelectedEvent, listenToSelectedEvent } from '../eventActions';
 import { Form, Formik } from 'formik';
 import * as Yup from 'yup';
 import TextInput from '../../../app/common/form/TextInput';
@@ -20,18 +26,24 @@ import {
 } from '../../../app/firestore/firestoreService';
 import LoadingComponent from '../../../app/layout/LoadingComponent';
 import { toast } from 'react-toastify';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const EventForm = () => {
     const history = useHistory();
+    const location = useLocation();
     const dispatch = useDispatch();
     const [loadingCancel, setLoadingCancel] = useState(false);
     const [confirmOpen, setConfirmOpen] = useState(false);
 
     const { id } = useParams();
     const { loading, error } = useSelector(state => state.async);
-
     const { selectedEvent } = useSelector(state => state.event);
+
+    useEffect(() => {
+        if (location.pathname !== '/createEvent') return;
+        dispatch(clearSelectedEvent());
+    }, [dispatch, location.pathname]);
+
     const initialValues = selectedEvent ?? {
         title: '',
         category: '',
@@ -73,10 +85,11 @@ const EventForm = () => {
     }
 
     useFirestoreDoc({
+        shouldExecute:
+            id !== selectedEvent?.id && location.pathname !== '/createEvent',
         query: () => listenToEventFromFirestore(id),
         data: event => dispatch(listenToSelectedEvent(event)),
         deps: [id, dispatch],
-        shouldExecute: !!id,
     });
 
     if (loading) return <LoadingComponent content='Loading event...' />;
@@ -86,6 +99,7 @@ const EventForm = () => {
     return (
         <Segment clearing>
             <Formik
+                enableReinitialize
                 initialValues={initialValues}
                 validationSchema={validationSchema}
                 onSubmit={async (values, { setSubmitting }) => {
@@ -136,6 +150,7 @@ const EventForm = () => {
                             showTimeSelect
                             timeCaption='time'
                             dateFormat='d MMMM yyyy, HH:mm'
+                            autoComplete='off'
                         />
                         <Button
                             loading={isSubmitting}

@@ -11,6 +11,7 @@ import { Link } from 'react-router-dom';
 import { formatDistance } from 'date-fns';
 import { CLEAR_COMMENTS } from '../eventConstants';
 import { createDataTree } from '../../../app/common/util/util';
+import { onValue, off } from 'firebase/database';
 
 const EventDetailedChat = ({ eventId }) => {
     const dispatch = useDispatch();
@@ -26,7 +27,7 @@ const EventDetailedChat = ({ eventId }) => {
     }
 
     useEffect(() => {
-        getEventChatRef(eventId).on('value', snapshot => {
+        onValue(getEventChatRef(eventId), snapshot => {
             if (!snapshot.exists()) return;
             dispatch(
                 listenToEventChat(
@@ -36,7 +37,7 @@ const EventDetailedChat = ({ eventId }) => {
         });
         return () => {
             dispatch({ type: CLEAR_COMMENTS });
-            getEventChatRef().off();
+            off(getEventChatRef());
         };
     }, [eventId, dispatch]);
 

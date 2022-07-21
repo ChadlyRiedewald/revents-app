@@ -4,7 +4,6 @@ import { Route, useLocation } from 'react-router-dom';
 import HomePage from '../../features/home/HomePage';
 import EventDetailedPage from '../../features/events/eventDetailed/EventDetailedPage';
 import EventForm from '../../features/events/eventForm/EventForm';
-import Sandbox from '../../features/sandbox/Sandbox';
 import { Container } from 'semantic-ui-react';
 import ModalManager from '../common/modals/ModalManager';
 import { ToastContainer } from 'react-toastify';
@@ -42,7 +41,6 @@ const App = () => {
                                 path='/events'
                                 component={EventDashboard}
                             />
-                            <Route path='/sandbox' component={Sandbox} />
                             <Route
                                 path='/events/:id'
                                 component={EventDetailedPage}

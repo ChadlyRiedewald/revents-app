@@ -11,29 +11,39 @@ import LoadingComponent from '../../../app/layout/LoadingComponent';
 const ProfilePage = () => {
     const dispatch = useDispatch();
     const { id } = useParams();
-    const { selectedUserProfile } = useSelector(state => state.profile);
+    const { selectedUserProfile, currentUserProfile } = useSelector(
+        state => state.profile
+    );
     const { currentUser } = useSelector(state => state.auth);
     const { loading, error } = useSelector(state => state.async);
+    let profile;
 
     useFirestoreDoc({
         query: () => getUserProfile(id),
         data: profile => dispatch(listenToSelectedUserProfile(profile)),
         deps: [dispatch, id],
+        shouldExecute: id !== currentUser.uid,
     });
 
-    if ((loading && !selectedUserProfile) || (!selectedUserProfile && !error))
+    if (id === currentUser.uid) {
+        profile = currentUserProfile;
+    } else {
+        profile = selectedUserProfile;
+    }
+
+    if ((loading && !profile) || (!profile && !error))
         return <LoadingComponent content='Loading profile...' />;
 
     return (
         <Grid>
             <Grid.Column width={16}>
                 <ProfileHeader
-                    profile={selectedUserProfile}
-                    isCurrentUser={currentUser.uid === selectedUserProfile.id}
+                    profile={profile}
+                    isCurrentUser={currentUser.uid === profile.id}
                 />
                 <ProfileContent
-                    profile={selectedUserProfile}
-                    isCurrentUser={currentUser.uid === selectedUserProfile.id}
+                    profile={profile}
+                    isCurrentUser={currentUser.uid === profile.id}
                 />
             </Grid.Column>
         </Grid>

@@ -13,19 +13,20 @@ const UnauthModal = ({ setModalOpen }) => {
     function handleClose() {
         if (currentLocation.pathname.includes('/profile/')) {
             history.push(prevLocation.pathname);
+            return;
         } else if (currentLocation.pathname.includes('/events/')) {
             setOpen(false);
-            setModalOpen(false);
         } else {
             history.push('/events');
-            setOpen(false);
         }
+        setOpen(false);
+        setModalOpen(false);
     }
 
     function handleOpenLoginModal(modalType) {
         dispatch(openModal({ modalType }));
         setOpen(false);
-        setModalOpen(false);
+        // setModalOpen(false);
     }
 
     return (
